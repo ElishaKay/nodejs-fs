@@ -6,6 +6,7 @@ let args=[];
 // print process.argv
 args=process.argv.slice(2);
 
+//save cli arguments in variables
 if(args === undefined || args.length == 0){
     	console.log('USAGE: node search [EXT] [TEXT]');
 } else {
@@ -18,20 +19,7 @@ if(args === undefined || args.length == 0){
 	}
 }
 
-function readContent(filePath, fileTypeFromDir) {
-    if(fs.lstatSync(filePath).isDirectory()) {
-      //
-    } else {
-      fs.readFile(filePath, 'utf8', function (err, content) {
-          if (err){
-           	console.log(err)
-          } else {
-          	search(content, fileTypeFromDir, filePath);
-          }
-      })
-    }
-}
-
+//fetch files from the directory
 fs.readdir(process.cwd(), function (err, files) {
   	if (err) {
    		console.log(err);
@@ -44,10 +32,24 @@ fs.readdir(process.cwd(), function (err, files) {
 });
 
 
-function search(content, fileTypeFromDir,filePath){
-  // console.log('content: ',content);
-  // console.log('fileTypeFromDir: ',fileTypeFromDir);
+// read the content of the given file 
+function readContent(filePath, fileTypeFromDir) {
+    if(fs.lstatSync(filePath).isDirectory()) {
+      //
+    } else {
+      fs.readFile(filePath, 'utf8', function (err, content) {
+          if (err){
+            console.log(err)
+          } else {
+            search(content, fileTypeFromDir, filePath);
+          }
+      })
+    }
+}
 
+//search through the content of the given file
+//and compare to the cli arguments passed in by the client
+function search(content, fileTypeFromDir, filePath){
   if(fileTypeFromDir==fileTypeFromCLI && content.includes(stringToSearchFor)){
     return console.log(__dirname+'/'+filePath);
   } else {
