@@ -1,9 +1,26 @@
-fs = require('fs');
-
+let fs = require('fs');
+let fileType='';
+let stringToSearchFor='';
+let args=[];
 // print process.argv
-process.argv.slice(2).forEach(function (val, index, array) {
-  console.log(index + ': ' + val);
-});
+args=process.argv.slice(2);
+
+if(args === undefined || args.length == 0){
+    	console.log('USAGE: node search [EXT] [TEXT]');
+} else {
+	for (let i = 0; i < args.length; i++) { 
+	     if(i==0){
+	    	fileType=args[i];
+	    } else if (i==1){
+	    	stringToSearchFor=args[i];
+	    } 
+	}
+}
+
+
+console.log('fileType',fileType)
+console.log('stringToSearchFor',stringToSearchFor);
+
 
 function readContent(callback) {
     fs.readFile("./Index.html", function (err, content) {
@@ -21,5 +38,5 @@ fs.readdir(process.cwd(), function (err, files) {
 });
 
 readContent(function (err, content) {
-    console.log(content)
+    console.log('content: ',content)
 });
