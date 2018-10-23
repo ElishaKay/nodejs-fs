@@ -9,8 +9,14 @@ let args=[];
 args=process.argv.slice(2);
 
 recursive(".", [".git*", "node_modules/*", ], function (err, files) {
-  // `files` is an array of file paths
-  console.log(files);
+    if (err) {
+      console.log(err);
+    } else {
+    for (let i = 0; i < files.length; i++) {
+      let fileTypeFromDir=files[i].split('.')[1];
+      readContent(files[i], fileTypeFromDir);
+    }
+  }
 });
 
 //save cli arguments in variables
@@ -28,14 +34,7 @@ if(args === undefined || args.length == 0){
 
 //fetch files from the directory
 fs.readdir(process.cwd(), function (err, files) {
-  	if (err) {
-   		console.log(err);
-  	} else {
-		for (let i = 0; i < files.length; i++) {
-			let fileTypeFromDir=files[i].split('.')[1];
-      readContent(files[i], fileTypeFromDir);
-		}
-  }
+  // 
 });
 
 
