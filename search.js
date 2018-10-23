@@ -21,6 +21,7 @@ if(args === undefined || args.length == 0){
 
 console.log('fileTypeFromCLI',fileTypeFromCLI)
 console.log('stringToSearchFor',stringToSearchFor);
+console.log(__dirname)
 
 
 function readContent(filePath, fileTypeFromDir) {
@@ -52,4 +53,10 @@ fs.readdir(process.cwd(), function (err, files) {
 function search(content, fileTypeFromDir){
   // console.log('content: ',content);
   console.log('fileTypeFromDir: ',fileTypeFromDir);
+
+  // if(){
+
+  // }else{
+  //   console.log('No file was found');
+  // }
 }
