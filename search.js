@@ -18,21 +18,15 @@ if(args === undefined || args.length == 0){
 	}
 }
 
-
-console.log('fileTypeFromCLI',fileTypeFromCLI)
-console.log('stringToSearchFor',stringToSearchFor);
-console.log(__dirname)
-
-
 function readContent(filePath, fileTypeFromDir) {
     if(fs.lstatSync(filePath).isDirectory()) {
       //
-    } else{
+    } else {
       fs.readFile(filePath, 'utf8', function (err, content) {
           if (err){
            	console.log(err)
           } else {
-          	search(content, fileTypeFromDir);
+          	search(content, fileTypeFromDir, filePath);
           }
       })
     }
@@ -50,13 +44,13 @@ fs.readdir(process.cwd(), function (err, files) {
 });
 
 
-function search(content, fileTypeFromDir){
+function search(content, fileTypeFromDir,filePath){
   // console.log('content: ',content);
-  console.log('fileTypeFromDir: ',fileTypeFromDir);
+  // console.log('fileTypeFromDir: ',fileTypeFromDir);
 
-  // if(){
-
-  // }else{
-  //   console.log('No file was found');
-  // }
+  if(fileTypeFromDir==fileTypeFromCLI && content.includes(stringToSearchFor)){
+    return console.log(__dirname+'/'+filePath);
+  } else {
+    console.log('No file was found');
+  }
 }
