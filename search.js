@@ -1,10 +1,17 @@
 let fs = require('fs');
+let recursive = require("recursive-readdir");
+
 let fileTypeFromCLI='';
 let fileTypeFromDir='';
 let stringToSearchFor='';
 let args=[];
 // print process.argv
 args=process.argv.slice(2);
+
+recursive(".", [".git*", "node_modules/*", ], function (err, files) {
+  // `files` is an array of file paths
+  console.log(files);
+});
 
 //save cli arguments in variables
 if(args === undefined || args.length == 0){
@@ -53,6 +60,6 @@ function search(content, fileTypeFromDir, filePath){
   if(fileTypeFromDir==fileTypeFromCLI && content.includes(stringToSearchFor)){
     return console.log(__dirname+'/'+filePath);
   } else {
-    console.log('No file was found');
+    // console.log('No file was found');
   }
 }

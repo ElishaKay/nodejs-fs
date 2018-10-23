@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-fs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElishaKay/nodejs-fs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElishaKay/nodejs-fs/issues"
+  },
+  "homepage": "https://github.com/ElishaKay/nodejs-fs#readme",
+  "dependencies": {
+    "recursive-readdir": "^2.2.2"
+  }
+}
