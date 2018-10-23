@@ -1,1 +1,0 @@
-example 4 also contains the word file and is a js filetype.

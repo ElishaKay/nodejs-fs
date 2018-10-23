@@ -8,20 +8,9 @@ let args=[];
 // print process.argv
 args=process.argv.slice(2);
 
-recursive(".", [".git*", "node_modules/*", ], function (err, files) {
-    if (err) {
-      console.log(err);
-    } else {
-    for (let i = 0; i < files.length; i++) {
-      let fileTypeFromDir=files[i].split('.')[1];
-      readContent(files[i], fileTypeFromDir);
-    }
-  }
-});
-
 //save cli arguments in variables
 if(args === undefined || args.length == 0){
-    	console.log('USAGE: node search [EXT] [TEXT]');
+    	return console.log('USAGE: node search [EXT] [TEXT]');
 } else {
 	for (let i = 0; i < args.length; i++) { 
 	     if(i==0){
@@ -32,14 +21,26 @@ if(args === undefined || args.length == 0){
 	}
 }
 
-//fetch files from the directory
-fs.readdir(process.cwd(), function (err, files) {
-  // 
+//grab files recursively
+recursive(".", [".git*", "node_modules/*", ], function (err, files) {
+    let promises=[];
+    if (err) {
+      console.log(err);
+    } else {
+    for (let i = 0; i < files.length; i++) {
+      let fileTypeFromDir=files[i].split('.')[1];
+      let newPromise = readAndSearch(files[i], fileTypeFromDir);
+      promises.push(newPromise);
+    }
+
+    Promise.all(promises).then(res => console.log('No file was found'));
+  }
 });
 
 
-// read the content of the given file 
-function readContent(filePath, fileTypeFromDir) {
+var readAndSearch = function(filePath, fileTypeFromDir) {
+  return new Promise(function(resolve, reject) {
+  /*stuff using username, password*/
     if(fs.lstatSync(filePath).isDirectory()) {
       //
     } else {
@@ -47,18 +48,15 @@ function readContent(filePath, fileTypeFromDir) {
           if (err){
             console.log(err)
           } else {
-            search(content, fileTypeFromDir, filePath);
+            if(fileTypeFromDir==fileTypeFromCLI && content.includes(stringToSearchFor)){
+              console.log(__dirname+'/'+filePath);
+
+            } else {
+              resolve({status: 'not found'})
+            }
           }
       })
     }
-}
+  })
+};
 
-//search through the content of the given file
-//and compare to the cli arguments passed in by the client
-function search(content, fileTypeFromDir, filePath){
-  if(fileTypeFromDir==fileTypeFromCLI && content.includes(stringToSearchFor)){
-    return console.log(__dirname+'/'+filePath);
-  } else {
-    // console.log('No file was found');
-  }
-}
