@@ -1,5 +1,6 @@
 let fs = require('fs');
-let fileType='';
+let fileTypeFromCLI='';
+let fileTypeFromDir='';
 let stringToSearchFor='';
 let args=[];
 // print process.argv
@@ -10,7 +11,7 @@ if(args === undefined || args.length == 0){
 } else {
 	for (let i = 0; i < args.length; i++) { 
 	     if(i==0){
-	    	fileType=args[i];
+	    	fileTypeFromCLI=args[i];
 	    } else if (i==1){
 	    	stringToSearchFor=args[i];
 	    } 
@@ -18,18 +19,22 @@ if(args === undefined || args.length == 0){
 }
 
 
-console.log('fileType',fileType)
+console.log('fileTypeFromCLI',fileTypeFromCLI)
 console.log('stringToSearchFor',stringToSearchFor);
 
 
-function readContent(filePath) {
-    fs.readFile(filePath, 'utf8', function (err, content) {
-        if (err){
-         	console.log(err)
-        } else {
-        	console.log(content);
-        }
-    })
+function readContent(filePath, fileTypeFromDir) {
+    if(fs.lstatSync(filePath).isDirectory()) {
+      //
+    } else{
+      fs.readFile(filePath, 'utf8', function (err, content) {
+          if (err){
+           	console.log(err)
+          } else {
+          	search(content, fileTypeFromDir);
+          }
+      })
+    }
 }
 
 fs.readdir(process.cwd(), function (err, files) {
@@ -37,9 +42,14 @@ fs.readdir(process.cwd(), function (err, files) {
    		console.log(err);
   	} else {
 		for (let i = 0; i < files.length; i++) {
-			readContent(files[i]);
+			let fileTypeFromDir=files[i].split('.')[1];
+      readContent(files[i], fileTypeFromDir);
 		}
-		console.log(files);
   }
 });
 
+
+function search(content, fileTypeFromDir){
+  // console.log('content: ',content);
+  console.log('fileTypeFromDir: ',fileTypeFromDir);
+}
